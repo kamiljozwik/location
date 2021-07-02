@@ -1,37 +1,28 @@
 import Head from "next/head";
-import { useState, useEffect } from 'react';
+import axios from "axios";
 
 import styles from "../styles/Home.module.css";
 
 export default function Home(props) {
-
-  const [fetched, setFetched] = useState()
-
-  useEffect(() => {
-    fetch("https://ipwhois.app/json/")
-    .then((response) => response.json())
-    .then((json) => setFetched(json))
-    .catch((e) => console.log(e));
-  }, [])
-
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Check location</title>
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main className={styles.main}>Hello</main>
-      <pre>
-        <p>Fetched on client</p>
-        {JSON.stringify(fetched, null, 4)}
-      </pre>
-      <pre>
-        <p>from server props</p>
-        {JSON.stringify(props.data, null, 4)}
-      </pre>
-      <h3>{props.ip}</h3>
-      <h3>{props.ip2}</h3>
+      <h2>{`Your IP is: ${props.ip}`}</h2>
+      <section className={styles.grid}>
+      <div>
+        <h3>ipwhois.app</h3>
+        <pre>{JSON.stringify(props.ipwhoisData, null, 4)}</pre>
+      </div>
+
+      <div>
+        <h3>ip-api.com</h3>
+        <pre>{JSON.stringify(props.ipapiData, null, 4)}</pre>
+      </div>
+      </section>
 
       <footer className={styles.footer}></footer>
     </div>
@@ -39,12 +30,18 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch("https://ipwhois.app/json/");
-  const data = await res.json();
+  const ip = context.req?.headers["x-real-ip"] ?? "";
 
-  const ip = context.req?.headers['x-real-ip'] ?? 'brak';
-  const ip2 = context.req?.connection?.remoteAddress ?? 'brak';
+  const ipWhoIs = axios.get(`https://ipwhois.app/json/${ip}`);
+  const ipApi = axios.get(`http://ip-api.com/json/${ip}?fields=66846719`);
 
-  // Pass data to the page via props
-  return { props: { data, ip, ip2 } };
+  const [ipwhoisResp, ipApiResp] = await Promise.allSettled([ipWhoIs, ipApi]);
+
+  return {
+    props: {
+      ip,
+      ipwhoisData: ipwhoisResp.status === 'fulfilled' ? ipwhoisResp?.value?.data : null,
+      ipapiData: ipApiResp.status === 'fulfilled' ? ipApiResp?.value?.data : null,
+    },
+  };
 }
