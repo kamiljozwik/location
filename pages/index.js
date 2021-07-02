@@ -31,6 +31,7 @@ export default function Home(props) {
         {JSON.stringify(props.data, null, 4)}
       </pre>
       <h3>{props.ip}</h3>
+      <h3>{props.ip2}</h3>
 
       <footer className={styles.footer}></footer>
     </div>
@@ -41,8 +42,9 @@ export async function getServerSideProps(context) {
   const res = await fetch("https://ipwhois.app/json/");
   const data = await res.json();
 
-  const ip = context.req.socket.localAddress;
+  const ip = context.req?.headers['x-real-ip'] ?? 'brak';
+  const ip2 = context.req?.connection?.remoteAddress ?? 'brak';
 
   // Pass data to the page via props
-  return { props: { data, ip } };
+  return { props: { data, ip, ip2 } };
 }
