@@ -8,7 +8,7 @@ export default function Home(props) {
   const [fetched, setFetched] = useState()
 
   useEffect(() => {
-    fetch("http://ipwhois.app/json/")
+    fetch("https://ipwhois.app/json/")
     .then((response) => response.json())
     .then((json) => setFetched(json))
     .catch((e) => console.log(e));
@@ -38,7 +38,7 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch("http://ipwhois.app/json/");
+  const res = await fetch("https://ipwhois.app/json/");
   const data = await res.json();
 
   const ip = context.req.socket.localAddress;
