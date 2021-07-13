@@ -1,0 +1,64 @@
+.root {
+  display: flex;
+  box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+  border-radius: 20px;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  background: white;
+}
+
+.root.error {
+  box-shadow: none;
+  background: #fffbfb;
+  border: 2px solid #ffb4b4
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  width: 40%;
+}
+
+.info dt {
+  font-weight: 600;
+}
+
+.info dd {
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: #131313;
+  font-size: 2rem;
+}
+
+.description {
+  color: #2e2e2e;
+}
+
+.geo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 60%;
+}
+
+.geo a {
+  text-align: center;
+}
+
+.code {
+  background: #fafafa;
+  border-radius: 20px;
+  margin: 2rem 2rem 1rem 2rem;
+  padding: 1rem;
+  overflow: scroll;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
