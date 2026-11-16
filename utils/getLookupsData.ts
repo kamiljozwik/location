@@ -31,6 +31,9 @@ export const getLookupsData = async (ip) => {
   const ipinfo = axios.get(
     `https://ipinfo.io/${ip}?token=${process.env.IPINFO_KEY}`
   );
+  const iptrust = axios.get(`https://api.iptrust.co/ip/${ip}`, {
+    headers: { "X-API-Key": process.env.IPTRUST_KEY },
+  });
 
   const [
     ipWhoIsResp,
@@ -42,6 +45,7 @@ export const getLookupsData = async (ip) => {
     abstractapiResp,
     ipstackResp,
     ipinfoResp,
+    iptrustResp,
   ] = await Promise.allSettled([
     ipWhoIs,
     ip_Api,
@@ -52,6 +56,7 @@ export const getLookupsData = async (ip) => {
     abstractapi,
     ipstack,
     ipinfo,
+    iptrust,
   ]);
 
   return {
@@ -65,5 +70,6 @@ export const getLookupsData = async (ip) => {
     abstractapiData: getData(abstractapiResp),
     ipstackData: getData(ipstackResp),
     ipinfoData: getData(ipinfoResp),
+    iptrustData: getData(iptrustResp),
   };
 };

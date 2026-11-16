@@ -10,6 +10,7 @@ export interface LookupsProps {
   abstractapiData: any;
   ipstackData: any;
   ipinfoData: any;
+  iptrustData: any;
 }
 
 /** Get data about tested IP Lookups services */
@@ -77,5 +78,12 @@ export const getLookups = (props: LookupsProps): CardProps[] => [
     freeLimit: "50k requests/month",
     apiKeyRequired: "Yes",
     json: props.ipinfoData,
+  },
+  {
+    name: "iptrust",
+    link: "https://iptrust.co/",
+    freeLimit: "10k requests/month",
+    apiKeyRequired: "Yes",
+    json: props.iptrustData,
   },
 ];
